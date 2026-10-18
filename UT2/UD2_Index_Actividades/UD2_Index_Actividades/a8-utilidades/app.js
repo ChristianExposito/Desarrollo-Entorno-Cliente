@@ -109,3 +109,172 @@ function calificacionNota() {
 
     console.log("Nota introducida: " + nota + " -> " + res);
 }
+function generadorSeries() { //Funcion hecha por IA
+    let opcion = pedirNumero('Elige: 1 para Tabla, 2 para Fibonacci, 3 para Primos');
+    if (opcion === null) return;
+
+    if (opcion === 1) {
+        let n = pedirNumero('Que tabla quieres ver?');
+        if (n !== null) {
+            console.log("Tabla del " + n);
+            for (let i = 1; i <= 10; i++) {
+                console.log(n + " x " + i + " = " + (n * i));
+            }
+        }
+    } else if (opcion === 2) {
+        let cant = pedirNumero('Cuantos numeros de Fibonacci quieres?');
+        if (cant !== null) {
+            let a = 0;
+            let b = 1;
+            let arrayFib = [];
+            for (let i = 0; i < cant; i++) {
+                arrayFib.push(a);
+                let aux = a + b;
+                a = b;
+                b = aux;
+            }
+            console.log("Fibonacci: " + arrayFib.join(', '));
+        }
+    } else if (opcion === 3) {
+        let limite = pedirNumero('Buscar primos hasta el numero:');
+        if (limite !== null) {
+            let listaPrimos = [];
+            for (let i = 2; i <= limite; i++) {
+                let esPrimo = true;
+                for (let j = 2; j < i; j++) {
+                    if (i % j === 0) {
+                        esPrimo = false;
+                        break;
+                    }
+                }
+                if (esPrimo) {
+                    listaPrimos.push(i);
+                }
+            }
+            console.log("Primos encontrados: " + listaPrimos.join(', '));
+        }
+    }
+}
+
+function estadisticasLista() {
+    let numeros = [];
+    let n;
+
+    do {
+        n = pedirNumero('Mete un numero (pon 0 para terminar):');
+        if (n !== null && n !== 0) {
+            numeros.push(n);
+        }
+    } while (n !== 0 && n !== null);
+
+    if (numeros.length === 0) {
+        console.log('No se metio ningun numero.');
+        return;
+    }
+
+    let suma = 0;
+    let max = numeros[0];
+    let min = numeros[0];
+
+    for (let i = 0; i < numeros.length; i++) {
+        suma += numeros[i];
+        if (numeros[i] > max) max = numeros[i];
+        if (numeros[i] < min) min = numeros[i];
+    }
+
+    let media = suma / numeros.length;
+    console.log("Lista: " + numeros.join(', '));
+    console.log("Suma total: " + suma + " | Media: " + media + " | Max: " + max + " | Min: " + min);
+}
+
+function adivinaElNumero() {
+    let secreto = Math.floor(Math.random() * 100) + 1;
+    let intentos = 0;
+    let encontrado = false;
+
+    console.log("Juego de adivinar el numero (1 al 100)");
+
+    while (!encontrado) {
+        let intentoUser = pedirNumero("Dime un numero:");
+        if (intentoUser === null) {
+            console.log("Juego cancelado.");
+            break;
+        }
+
+        intentos++;
+        if (intentoUser === secreto) {
+            encontrado = true;
+            console.log("Has ganado! El numero era " + secreto + ". Intentos: " + intentos);
+        } else if (intentoUser < secreto) {
+            alert("El numero secreto es mayor.");
+        } else {
+            alert("El numero secreto es menor.");
+        }
+    }
+}
+
+function juegoVidaCuenta() {
+    let saldo = pedirNumero('Dinero ahorrado al empezar (€):');
+    if (saldo === null) return;
+
+    let ingreso = pedirNumero('Cuanto ingresas al mes (€):');
+    if (ingreso === null) return;
+
+    let gasto = pedirNumero('Cuanto gastas al mes (€):');
+    if (gasto === null) return;
+
+    let meses = pedirNumero('Cuantos meses quieres simular?');
+    if (meses === null) return;
+
+    let mesEnRojos = null;
+
+    for (let mes = 1; mes <= meses; mes++) {
+        saldo = saldo + ingreso - gasto;
+        if (saldo < 0 && mesEnRojos === null) {
+            mesEnRojos = mes;
+        }
+    }
+
+    if (mesEnRojos !== null) {
+        console.log("Cuidado! Te quedas en numeros rojos en el mes " + mesEnRojos + ". Saldo final: " + saldo + "€");
+    } else {
+        console.log("Sobreviviste! Saldo final tras " + meses + " meses: " + saldo + "€");
+    }
+}
+
+function menu() {
+    let opcion = -1;
+
+    do {
+        let textoMenu = "MENU PRINCIPAL: 1.Conversor | 2.IMC | 3.IGIC | 4.Notas | 5.Series | 6.Estadisticas | 7.Adivinar | 8.Banco | 0.Salir";
+
+        opcion = pedirNumero(textoMenu);
+
+        if (opcion === null || opcion === 0) {
+            console.log('Saliendo del programa...');
+            break;
+        }
+
+        if (opcion === 1) {
+            conversorUnidades();
+        } else if (opcion === 2) {
+            calculadoraIMC();
+        } else if (opcion === 3) {
+            precioConIgic();
+        } else if (opcion === 4) {
+            calificacionNota();
+        } else if (opcion === 5) {
+            generadorSeries();
+        } else if (opcion === 6) {
+            estadisticasLista();
+        } else if (opcion === 7) {
+            adivinaElNumero();
+        } else if (opcion === 8) {
+            juegoVidaCuenta();
+        } else {
+            alert('Esa opcion no existe');
+        }
+    } while (opcion !== 0);
+}
+
+menu();
