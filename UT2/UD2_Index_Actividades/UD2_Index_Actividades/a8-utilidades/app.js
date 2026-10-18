@@ -66,3 +66,46 @@ function calculadoraIMC() {
 
     console.log("Tu IMC es " + imc + " -> " + mensajeEstado);
 }
+
+function precioConIgic() {
+    let base = pedirNumero('Introduce el precio sin IVA/IGIC:');
+    if (base === null) return;
+
+    let tipoIGIC = prompt('Introduce el % de IGIC (si lo dejas en blanco se aplica el 7%):');
+    
+    let porc = Number(tipoIGIC);
+    if (tipoIGIC === null || tipoIGIC.trim() === '') {
+        porc = 7;
+    }
+
+    let impuesto = base * (porc / 100);
+    let total = base + impuesto;
+
+    console.log("Base: " + base + "€ | IGIC (" + porc + "%): " + impuesto + "€ | Total a pagar: " + total + "€");
+}
+
+function calificacionNota() {
+    let nota = pedirNumero('Introduce la nota del examen 0 al 10:');
+    
+    if (nota === null || nota < 0 || nota > 10) {
+        console.log('Nota invalida o cancelada.');
+        return;
+    }
+
+    let res = '';
+    if (nota < 5) {
+        res = 'Suspenso';
+    } else if (nota >= 5 && nota < 6) {
+        res = 'Aprobado raspado';
+    } else if (nota >= 6 && nota < 7) {
+        res = 'Bien';
+    } else if (nota >= 7 && nota < 9) {
+        res = 'Notable';
+    } else if (nota < 10) {
+        res = 'Sobresaliente';
+    } else {
+        res = 'Matricula de Honor';
+    }
+
+    console.log("Nota introducida: " + nota + " -> " + res);
+}
