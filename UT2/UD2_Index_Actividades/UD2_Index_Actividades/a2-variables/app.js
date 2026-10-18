@@ -9,7 +9,7 @@ let potenciaCaballos = 140;
 console.log(marcaVehiculo);
 console.log(modeloVehiculo);
 console.log(añoFabricacion);
-console.log(kilometrajeActuales);
+console.log(kilometrosActual);
 console.log(esCabriolet);
 console.log(tipoCombustible);
 console.log(potenciaCaballos);
