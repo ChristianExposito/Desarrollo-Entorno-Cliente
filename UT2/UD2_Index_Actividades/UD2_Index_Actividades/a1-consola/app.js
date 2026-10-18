@@ -11,8 +11,9 @@
      Navegador:  enlázalo en el index.html mínimo (<script src="app.js" defer>)
                  y ábrelo con Live Server; el resultado está en la consola (F12)
    ===================================================================== */
-'use strict'; // PUNTO 4: prueba a comentar esta línea (ver más abajo)
 
+'use strict'; // PUNTO 4: prueba a comentar esta línea (ver más abajo)
+resultado = 42;
 // ---------------------------------------------------------------------
 // PUNTO 1 · Evalúa estas expresiones en la consola y anota el resultado
 // ---------------------------------------------------------------------
@@ -29,7 +30,7 @@ console.log('10' + 3);      // '103'     con un texto, + CONCATENA (convierte el
 console.log('10' - 3);      // 7         - solo sabe restar: convierte '10' en 10
 
 // Plantilla literal: comillas invertidas y ${...} para insertar valores
-const nombre = 'Raquel';
+const nombre = 'Christian';
 const anioActual = new Date().getFullYear();
 console.log(`Me llamo ${nombre} y estamos en ${anioActual}`);
 
@@ -41,8 +42,7 @@ console.log('Mensaje normal con console.log');          // texto sin formato
 console.warn('Aviso con console.warn');                 // amarillo, con un triángulo
 console.error('Error simulado con console.error');      // rojo, con un aspa (NO detiene el programa)
 console.table({ modulo: 'DEW', curso: 2, horas: 6 });   // los datos en forma de tabla
-
-console.group('Grupo: datos de la sesión');             // abre un grupo desplegable
+// alert('hola');
 console.log('Unidad: UT2 · Sintaxis de JavaScript');    //   estos dos mensajes
 console.log('Actividad: A1');                           //   aparecen sangrados
 console.groupEnd();                                     // cierra el grupo
