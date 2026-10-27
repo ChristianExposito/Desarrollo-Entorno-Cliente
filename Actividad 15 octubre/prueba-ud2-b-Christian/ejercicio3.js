@@ -12,14 +12,17 @@ if (typeof prompt === 'undefined') { require('./_node-prompt.js'); } // solo act
 
 // ----- FUNCIÓN -----------------------------------------------------------
 function costeAparcamiento(minutos,vehiculo){
-const minutos = prompt("Cuantos minutos va a entrar")
-if(minutos>= 0 && minutos<1440 ){
+
+const tipo = vehiculo.trim().toLowerCase();
+  if (tipo !== 'coche' && tipo !== 'moto' && tipo !== 'furgoneta') return null;
+
+if (isNaN(minutos) || minutos<= 0 && minutos>1440){
    console.log("no se puede poner menos de 0 o mas de 1440")
 }else{
    console.log("Guardado")
 }
 let tarifaBase = 0;
-if(minutos>15){
+if(minutos<15){
    console.log("Es gratis")
 }else if(minutos>60){
    console.log("pagas 1,5€")
@@ -37,8 +40,14 @@ const vehiculo = prompt("Que vehiculo va a entrar 'coche','moto' o 'furgoneta'")
 
 
 // ----- PROGRAMA ----------------------------------------------------------
+const minutos = Number(prompt("Cuantos minutos va a entrar"));
+const entradaVehiculo = prompt("¿Qué tipo de vehículo es? ('coche', 'moto' o 'furgoneta')");
 
+const costeFinal = costeAparcamiento(minutos,entradaVehiculo);
 
+if (costeFinal !== null){
+    alert(`El coste total del aparcamiento es: ${costeFinal}€`);
+}
 
 /* ---------------------------------------------------------------------
    CASOS DE PRUEBA (rellena la columna «obtenido» tras ejecutar)
