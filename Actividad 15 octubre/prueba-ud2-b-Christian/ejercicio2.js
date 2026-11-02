@@ -28,20 +28,20 @@ const TIPO_IGIC = 0.07;
 
 // ----- a) y b) ENTRADA ----------------------------------------------------
 const importeTexto = prompt('Importe en euros (entero):') ?? '100' ; // '100' si cancela
-const importe = importeTexto.toInt();                                           // texto -> número
+const importe = Number(importeTexto);                                           // texto -> número
 
 // ----- c) CLÁUSULA DE GUARDA ----------------------------------------------
-if ( importeTexto>0) {
+if (Number.isNaN(importe) || importe<=0 ) {
   console.error('Error: el importe debe ser un número positivo.');
 } else {
   // ----- d) CÁLCULO --------------------------------------------------------
-  const billetes50 = Math.trunc(restoTras50) / 50 ;          // billetes de 50 completos
-  const restoTras50 = restoTras50 % 50 ;         // lo que sobra tras los de 50
-  const billetes20 = Math.trunc(restoTras50) / 20;          // billetes de 20 completos
+  const billetes50 = Math.trunc(restoTras50 / 50 );          // billetes de 50 completos
+  const restoTras50 = importe % 50 ;         // lo que sobra tras los de 50
+  const billetes20 = Math.trunc(restoTras50 / 20);          // billetes de 20 completos
   const restoTras20 = restoTras50 % 20;
   const billetes10 = Math.trunc(restoTras20 / 10);
-  const monedas = billetes10 % 10;             // lo que sobra tras los de 10
-  const conIgic = importe*0.07/100 ;             // importe + 7 %, dos decimales (texto)
+  const monedas = restoTras20 - importe;             // lo que sobra tras los de 10
+  const conIgic = importe * 1.07.toFixed(2) ;             // importe + 7 %, dos decimales (texto)
 
   // ----- e) SALIDA ---------------------------------------------------------
   console.log(`Importe: ${importe} € (con IGIC: ${conIgic} €)`);
