@@ -1,0 +1,11 @@
+'use strict';
+
+let valor = prompt('Introduce un número:');
+
+console.log('Texto recibido:', valor);
+console.log('typeof:', typeof valor);
+console.log('Number():', Number(valor));
+console.log('parseInt():', parseInt(valor));
+console.log('parseFloat():', parseFloat(valor));
+console.log('Number.isNaN():', Number.isNaN(Number(valor)));
+
