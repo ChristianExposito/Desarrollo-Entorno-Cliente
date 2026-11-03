@@ -1,40 +1,22 @@
-const CLAVE_MEMORIA = "mis_preferencias_juego";
+const CLAVE_MEMORIA =  "memoria"
 const CONFIG_PREDETEFINIDA = {
     parejas: 8 
 };
 
-function obtenerConfiguracionGuardada() {
-    try {
-        let guardado = localStorage.getItem(CLAVE_MEMORIA);
-        if (guardado) {
-            let datos = JSON.parse(guardado);
-            if (Number.isInteger(datos.parejas) && datos.parejas >= 4 && datos.parejas <= 12) {
-                return datos.parejas;
-            }
-        }
-    } catch (error) {
-        console.error("Error al leer la memoria:", error);
-    }
-    return CONFIG_PREDETEFINIDA.parejas;
-}
+f
 
 function configurarPartida() {
-    let valorActual = obtenerConfiguracionGuardada();
-    let respuesta = prompt(`¿Cuántas parejas quieres? (Entre 4 y 12):`, valorActual);
-    
-    if (respuesta === null) return valorActual;
+let ParejasCartas = prompt("Introduce el numero de parejas entre 4 y 12");
+if(ParejasCartas !== null && ParejasCartas.trim() === ""){ //Si el usuario cancela o escribe espacios saltara el numero de parejas predeterminada
+    return CONFIG_PREDETEFINIDA.parejas;
+}
+let numeroParejas = Number(ParejasCartas);
 
-    let numeroParejas = parseInt(respuesta, 10);
-
-    if (Number.isInteger(numeroParejas) && numeroParejas >= 4 && numeroParejas <= 12) {
-        // Guardamos un objeto de configuración en localStorage
-        let nuevaConfig = { parejas: numeroParejas };
-        localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(nuevaConfig));
-        return numeroParejas;
-    } else {
-        console.error("Error: El número debe ser un entero entre 4 y 12. Se mantiene el valor anterior.");
-        return valorActual;
-    }
+if (isNaN(ParejasCartas) || ParejasCartas<4 || ParejasCartas>12){//Si el usuario escribe algo que no sea numero y ese mismo numero es menor que 4 o mayor que 12 
+    return CONFIG_PREDETEFINIDA.parejas;
+}else{
+    return ParejasCartas;
+}
 }
 
 function generarCartas(numParejas) {
@@ -48,11 +30,13 @@ function generarCartas(numParejas) {
 
 
 function fisher_yates(arrayCartas) {
+    // Recorre el array al revés, desde la última carta hasta la segunda
     for (let i = arrayCartas.length - 1; i > 0; i--) {
+        //Elige una posición aleatoria entre la primera carta (0) y la carta actual (i)
         let aleatorio = Math.floor(Math.random() * (i + 1));
-        let temporal = arrayCartas[i];
-        arrayCartas[i] = arrayCartas[aleatorio];
-        arrayCartas[aleatorio] = temporal;
+        let temporal = arrayCartas[i];           // Guarda la carta actual en una variable temporal
+        arrayCartas[i] = arrayCartas[aleatorio];  // Pone la carta aleatoria en la posición actual
+        arrayCartas[aleatorio] = temporal;        // Mueve la carta de la variable temporal a la posición aleatoria
     }
     return arrayCartas;
 }
@@ -65,9 +49,7 @@ function mostrarCartas(cartas) {
         console.error("No se encontró el elemento con id 'tablero'.");
         return;
     }
-
     contenedorTablero.innerHTML = "";
-//creamos divs por cada carta y los metemos dentro del tablero
     cartas.forEach((carta) => {
     let divCarta = document.createElement("div");
     divCarta.className = "carta";
@@ -79,13 +61,14 @@ function mostrarCartas(cartas) {
 
 function iniciarJuego() {
     console.log("--- INICIANDO JUEGO ---");
-    let numParejas = configurarPartida();
-    let cartas = generarCartas(numParejas);
-    let cartasBarajadas = fisher_yates(cartas);
-    console.log("Número de parejas:", numParejas);
-    console.log("Total de cartas:", cartasBarajadas.length);
-    console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" "));
-    mostrarCartas(cartasBarajadas);
+
+    let numParejas = configurarPartida();   // Pregunta al usuario cuántas parejas quiere jugar
+    let cartas = generarCartas(numParejas); // Crea la baraja de cartas según el tamaño elegido
+    let cartasBarajadas = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
+    console.log("Número de parejas:", numParejas); // Verifica cuántas parejas seleccionó el usuario
+    console.log("Total de cartas:", cartasBarajadas.length); // Muestra la cantidad total de cartas generadas
+    console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
+    mostrarCartas(cartasBarajadas); // Dibuja visualmente las cartas en la interfaz de la página
 }
 
 
