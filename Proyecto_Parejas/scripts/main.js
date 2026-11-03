@@ -3,7 +3,7 @@ const CONFIG_PREDETEFINIDA = {
     parejas: 8 
 };
 
-f
+
 
 function configurarPartida() {
 let ParejasCartas = prompt("Introduce el numero de parejas entre 4 y 12");
@@ -57,25 +57,39 @@ function mostrarCartas(cartas) {
     contenedorTablero.appendChild(divCarta);
 });
 }
-
+//Guarda el estado completo actual de las cartas en el localStorage
+function guardarProgreso(cartas) {
+    localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(cartas));
+}
 
 function iniciarJuego() {
     console.log("--- INICIANDO JUEGO ---");
-
-    let numParejas = configurarPartida();   // Pregunta al usuario cuántas parejas quiere jugar
-    let cartas = generarCartas(numParejas); // Crea la baraja de cartas según el tamaño elegido
-    let cartasBarajadas = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
-    console.log("Número de parejas:", numParejas); // Verifica cuántas parejas seleccionó el usuario
-    console.log("Total de cartas:", cartasBarajadas.length); // Muestra la cantidad total de cartas generadas
-    console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
-    mostrarCartas(cartasBarajadas); // Dibuja visualmente las cartas en la interfaz de la página
+    //Intentamos leer si hay una partida guardada
+    const partidaGuardada = localStorage.getItem(CLAVE_MEMORIA);
+    let cartasBarajadas;
+    if (partidaGuardada) {
+        console.log("Restaurando partida guardada...");
+        // ¡Existe una partida! Recuperamos las cartas exactamente como estaban
+        cartasBarajadas = JSON.parse(partidaGuardada);
+    } else {
+        console.log("Creando partida nueva desde cero...");
+        let numParejas = configurarPartida();   // Pregunta al usuario cuántas parejas quiere jugar
+        let cartas = generarCartas(numParejas); // Crea la baraja de cartas según el tamaño elegido
+        cartasBarajadas = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
+        guardarProgreso(cartasBarajadas);
+        console.log("Número de parejas:", numParejas); // Verifica cuántas parejas seleccionó el usuario
+        console.log("Total de cartas:", cartasBarajadas.length); // Muestra la cantidad total de cartas generadas
+        console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
+        
+}
+mostrarCartas(cartasBarajadas); // Dibuja visualmente las cartas en la interfaz de la página
 }
 
 
-function finDePartida() {
-    localStorage.removeItem(CLAVE_MEMORIA);
+function fin() {
+    localStorage.removeItem(CLAVE_MEMORIA); // Borra el progreso guardado en el navegador
     console.log("Partida finalizada. Memoria borrada.");
 }
 
-
+// Arranca el juego automáticamente cuando la página web se ha cargado por completo
 window.addEventListener("DOMContentLoaded", iniciarJuego);
