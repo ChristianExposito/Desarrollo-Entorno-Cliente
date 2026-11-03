@@ -1,2 +1,16 @@
-const parejas= prompt("cuantas parejas vas a querer tener en tu juego entre 4 y 12?")
-if(parejas<4 || parejas>12)
+const inputParejas = document.getElementById('parejas');
+const boton = document.getElementById('boton');
+const contenedor = document.getElementsByClassName('contenedor');
+boton.addEventListener('click',() => {
+    const numeroDivs = Number(inputParejas);
+
+    if(isNaN(numeroDivs) || numeroDivs<=4 && numeroDivs>=14){
+        alert("Introduce un numero valido")
+        return;
+    }
+    contenedor.innerHTML = '';
+    
+    for(let i = 1;i<= numeroDivs;i++){
+
+    }
+}
