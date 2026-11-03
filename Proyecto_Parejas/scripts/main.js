@@ -1,5 +1,5 @@
 const CLAVE_MEMORIA =  "memoria"
-const CONFIG_PREDETEFINIDA = {
+const CONFIG_PREDEFINIDA = {
     parejas: 8 
 };
 
@@ -8,12 +8,12 @@ const CONFIG_PREDETEFINIDA = {
 function configurarPartida() {
 let ParejasCartas = prompt("Introduce el numero de parejas entre 4 y 12");
 if(ParejasCartas !== null && ParejasCartas.trim() === ""){ //Si el usuario cancela o escribe espacios saltara el numero de parejas predeterminada
-    return CONFIG_PREDETEFINIDA.parejas;
+    return CONFIG_PREDEFINIDA.parejas;
 }
 let numeroParejas = Number(ParejasCartas);
 
 if (isNaN(ParejasCartas) || ParejasCartas<4 || ParejasCartas>12){//Si el usuario escribe algo que no sea numero y ese mismo numero es menor que 4 o mayor que 12 
-    return CONFIG_PREDETEFINIDA.parejas;
+    return CONFIG_PREDEFINIDA.parejas;
 }else{
     return ParejasCartas;
 }
