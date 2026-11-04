@@ -1,0 +1,10 @@
+.cabecera{
+    background-color: #0B35BA;
+    height: 40px;
+    color: white;
+}
+.cabecera a{
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
