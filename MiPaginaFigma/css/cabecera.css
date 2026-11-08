@@ -1,31 +1,35 @@
 .cabecera{
     background-color: #0B35BA;
-    height: 40px;
+    height: 60px;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .cabecera a{
     margin-left: 10px;
     justify-content: center;
     align-items: center;
     color: white;
+    display: inline-block;
+    text-decoration: none;
 }
 .logo{
     display: flex;
-    margin-left: 60%;
-    margin-top: -15px;
+    margin-left: 20px;
 }
 .search-box{
     display: flex;
-    margin-left: 75%;
-    margin-top: -20px;
+    align-items: center;
 }
 .cabecera a[href="#1"] {
   color: yellow;
 }
 .titulo{
-    background-color: mediumpurple;
+    background-color: lavender;
     width: 100%;
     height: 100px;
+    margin-top: -22px;
 }
 h1{
     color: blue;
@@ -34,5 +38,60 @@ h1{
 .catalago{
     background-color: black;
     border: black solid;
-    
+}
+
+.catalog {
+  max-width: 1200px;
+  margin: 0;
+  padding: 40px;
+}
+.header {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.num {
+  font-size: 10px;
+  color: blue;
+  font-weight: 600;
+}
+
+.header h2 {
+  font-size: 30px;
+  font-weight: 300;
+  margin: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 -12px;
+}
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.card{
+    padding: 0 12px;
+}
+.card img {
+  width: 100%;
+  margin-bottom: 14px;
+}
+.card h3 {
+  font-size: 10px;
+  font-weight: 500;
+  margin: 0;
+}
+.price {
+  font-size: 15px;
+  font-weight: 600;
+}
+.details {
+  font-size: 10px;
+  color: grey;
+  margin: 4px 0 0 0;
 }
