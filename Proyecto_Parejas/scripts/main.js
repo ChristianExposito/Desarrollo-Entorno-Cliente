@@ -61,6 +61,10 @@ function mostrarCartas(cartas) {
 function guardarProgreso(cartas) {
     localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(cartas));
 }
+function voltearCarta(voltear){
+    let descubierta = mazo[voltear];
+    
+}
 
 function iniciarJuego() {
     console.log("--- INICIANDO JUEGO ---");
