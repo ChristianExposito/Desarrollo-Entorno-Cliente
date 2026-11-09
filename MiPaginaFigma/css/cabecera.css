@@ -1,5 +1,5 @@
 .cabecera{
-    background-color: #0B35BA;
+    background-color: blue;
     height: 60px;
     color: white;
     display: flex;
@@ -20,7 +20,7 @@
     display: flex;
     margin-left:40%;
 }
-.search-box{
+.buscador{
     display: flex;
     align-items: center;
     margin-left: 20px;
@@ -97,9 +97,11 @@ h1{
     margin-right: 20px;
     margin-bottom: 20px;
     width: 20em;
+    border-radius: 10px;
     
 }
 .card img {
+  padding-top: 10px;
   width: 100%;
   margin-bottom: 14px;
 }
@@ -117,30 +119,23 @@ h1{
   color: grey;
   
 }
-
-/* ==========================================
-   PIE DE PÁGINA (SIN LINE-HEIGHT Y SIN GAP)
-   ========================================== */
-
-.newsletter-bar {
-  background: #E7E6FB;
-  padding: 15px 30px;
+.Pie_Pagina_Caja {
+  padding: 20px;
+  background-color: lavender;
 }
 
-.newsletter-container {
-  max-width: 1100px;
-  margin: 0 auto;
+.Caja_Correo {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.newsletter-title {
-  color: #3b42a4;
+.Titulo_Pie_Pagina {
+  color: blue;
   font-weight: bold;
 }
 
-.newsletter-input {
+.Boton_Correo {
   border: none;
   border-radius: 4px;
   padding: 10px 15px;
@@ -148,51 +143,44 @@ h1{
   outline: none;
 }
 
-.footer-main {
-  background: #7477b8;
-  color: #e2e4f6;
+.footerCompleto {
+  background-color: blue;
+  color: white;
   padding: 40px 30px;
 }
 
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
+.CajaFooter {
   display: flex;
   justify-content: space-between;
 }
 
-.footer-container > div {
+.CajaFooter > div {
   width: 22%;
   margin-right: 40px;
 }
 
-.footer-container > div:last-child {
+.CajaFooter > div:last-child {
   margin-right: 0;
 }
 
-.footer-container h2 {
-  color: #fff;
+.CajaFooter h2 {
+  color: white;
   margin: 0 0 10px 0;
   letter-spacing: 2px;
 }
 
-.footer-container h3 {
-  color: #ffc107;
+.CajaFooter h3 {
+  color: yellow;
   font-size: 12px;
   margin: 0 0 15px 0;
   letter-spacing: 1px;
 }
 
-.footer-container a {
+.CajaFooter a {
   color: inherit;
   text-decoration: none;
 }
 
-.footer-container a:hover {
+.CajaFooter a:hover {
   text-decoration: underline;
-}
-
-.bold {
-  font-weight: bold;
-  color: #fff;
 }
