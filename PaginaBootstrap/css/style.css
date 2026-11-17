@@ -1,0 +1,15 @@
+.catalogo{
+width: 800px;
+height: 500px;
+
+display: flex;
+}
+.col{
+    margin-left: 20px;
+}
+.card{
+    margin-bottom: 20px;
+}
+.card-img-top{
+    height: 200pt;
+}

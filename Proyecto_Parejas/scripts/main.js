@@ -2,7 +2,7 @@ const CLAVE_MEMORIA =  "memoria"
 const CONFIG_PREDEFINIDA = {
     parejas: 8 
 };
-
+let tabla=[];
 
 
 function configurarPartida() {
@@ -19,25 +19,18 @@ if (isNaN(ParejasCartas) || ParejasCartas<4 || ParejasCartas>12){//Si el usuario
 }
 }
 
-function generarCartas(numParejas) {
-    let mazo = [];
-    for (let i = 1; i <= numParejas; i++) {
-        mazo.push({ numero: i, descubierta: true });
-        mazo.push({ numero: i, descubierta: true });
-    }
-    return mazo;
-}
+
 
 
 function fisher_yates(arrayCartas) {
     // Recorre el array al revés, desde la última carta hasta la segunda
-    for (let i = arrayCartas.length - 1; i > 0; i--) {
-        //Elige una posición aleatoria entre la primera carta (0) y la carta actual (i)
-        let aleatorio = Math.floor(Math.random() * (i + 1));
-        let temporal = arrayCartas[i];           // Guarda la carta actual en una variable temporal
-        arrayCartas[i] = arrayCartas[aleatorio];  // Pone la carta aleatoria en la posición actual
-        arrayCartas[aleatorio] = temporal;        // Mueve la carta de la variable temporal a la posición aleatoria
-    }
+    // for (let i = arrayCartas.length - 1; i > 0; i--) {
+    //     //Elige una posición aleatoria entre la primera carta (0) y la carta actual (i)
+    //     let aleatorio = Math.floor(Math.random() * (i + 1));
+    //     let temporal = arrayCartas[i];           // Guarda la carta actual en una variable temporal
+    //     arrayCartas[i] = arrayCartas[aleatorio];  // Pone la carta aleatoria en la posición actual
+    //     arrayCartas[aleatorio] = temporal;        // Mueve la carta de la variable temporal a la posición aleatoria
+    // }
     return arrayCartas;
 }
 
@@ -53,40 +46,65 @@ function mostrarCartas(cartas) {
     cartas.forEach((carta) => {
     let divCarta = document.createElement("div");
     divCarta.className = "carta";
-    divCarta.textContent = carta.numero;
+    if(carta.descubierta === true){
+        divCarta.textContent = carta.numero;
+    }else{
+        divCarta.textContent = "x";
+
+    }
     contenedorTablero.appendChild(divCarta);
 });
 }
 //Guarda el estado completo actual de las cartas en el localStorage
+
+function generarCartas(numParejas) {
+    let mazo = [];
+    for (let i = 1; i <= numParejas; i++) {
+        mazo.push({ numero: i, descubierta: false });
+        mazo.push({ numero: i, descubierta: false });
+    }
+    return mazo;
+}
+
+function voltearCarta(voltear){
+
+    let cartaElegida = tabla[voltear];
+    console.log(cartaElegida.numero);
+    
+    if(cartaElegida.descubierta == false){
+         cartaElegida.descubierta = true;
+    }else{
+        cartaElegida.descubierta = false;
+    }
+
+    mostrarCartas(tabla);
+}
+
 function guardarProgreso(cartas) {
     localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(cartas));
-}
-function voltearCarta(voltear){
-    let descubierta = mazo[voltear];
-    
 }
 
 function iniciarJuego() {
     console.log("--- INICIANDO JUEGO ---");
     //Intentamos leer si hay una partida guardada
     const partidaGuardada = localStorage.getItem(CLAVE_MEMORIA);
-    let cartasBarajadas;
+    
     if (partidaGuardada) {
         console.log("Restaurando partida guardada...");
         // ¡Existe una partida! Recuperamos las cartas exactamente como estaban
-        cartasBarajadas = JSON.parse(partidaGuardada);
+        tabla = JSON.parse(partidaGuardada);
     } else {
         console.log("Creando partida nueva desde cero...");
         let numParejas = configurarPartida();   // Pregunta al usuario cuántas parejas quiere jugar
         let cartas = generarCartas(numParejas); // Crea la baraja de cartas según el tamaño elegido
-        cartasBarajadas = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
-        guardarProgreso(cartasBarajadas);
+        tabla = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
+        guardarProgreso(tabla);
         console.log("Número de parejas:", numParejas); // Verifica cuántas parejas seleccionó el usuario
-        console.log("Total de cartas:", cartasBarajadas.length); // Muestra la cantidad total de cartas generadas
-        console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
+        console.log("Total de cartas:", tabla.length); // Muestra la cantidad total de cartas generadas
+        console.log("Secuencia en el tablero:", tabla.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
         
 }
-mostrarCartas(cartasBarajadas); // Dibuja visualmente las cartas en la interfaz de la página
+mostrarCartas(tabla); // Dibuja visualmente las cartas en la interfaz de la página
 }
 
 
