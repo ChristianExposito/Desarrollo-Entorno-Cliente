@@ -13,3 +13,7 @@ Si existe: la recupera directamente para que el usuario pueda seguir jugando por
 Si no existe: arranca una partida nueva llamando a configurarPartida() para elegir el número de parejas, genera las cartas, las mezcla con el algoritmo de Fisher-Yates y las guarda. Al final, llama a mostrarCartas() para pintarlas en pantalla.
 # La funcion fin #
 Borra la clave para resetar la partida
+
+
+
+contador--- que sea singleton y obeservador=carta descubierta
