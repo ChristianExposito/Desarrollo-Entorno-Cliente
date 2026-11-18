@@ -1,15 +1,83 @@
-.catalogo{
-width: 800px;
-height: 500px;
+.catalogo {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-display: flex;
+.col {
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.col{
-    margin-left: 20px;
+
+.card {
+    width: 280px;
+    margin-bottom: 0;
 }
-.card{
-    margin-bottom: 20px;
-}
-.card-img-top{
+
+.card-img-top {
     height: 200pt;
+    object-fit: cover;
+}
+.precio {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff; 
+}
+.coste {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+footer {
+    clear: both;
+    width: 100%;
+    margin-top: 60px;
+}
+
+.footer {
+    background-color: #7472ba;
+    color: #fff;
+    padding: 50px 20px;
+    font-size: 0.9rem;
+}
+
+.footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer .Marca,
+.footer .Condiciones,
+.footer .Contacto,
+.footer .Ubicacion {
+    flex: 1;
+    min-width: 220px;
+}
+
+.footer-heading {
+    color: #e6c639;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.footer-text-muted,
+.footer-link {
+    color: #d6d5f2;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #fff;
 }
