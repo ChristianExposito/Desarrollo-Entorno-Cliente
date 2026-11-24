@@ -1,99 +1,161 @@
-const CLAVE_MEMORIA =  "memoria"
+const CLAVE_MEMORIA = "memoria";
 const CONFIG_PREDEFINIDA = {
-    parejas: 8 
+    parejas: 8
 };
 
+let mazo = [];
+let contador = 0;
 
+// CLASE CARTA
+class Carta {
+    #numero;
+    #descubierta;
 
-function configurarPartida() {
-let ParejasCartas = prompt("Introduce el numero de parejas entre 4 y 12");
-if(ParejasCartas !== null && ParejasCartas.trim() === ""){ //Si el usuario cancela o escribe espacios saltara el numero de parejas predeterminada
-    return CONFIG_PREDEFINIDA.parejas;
-}
-let numeroParejas = Number(ParejasCartas);
-
-if (isNaN(ParejasCartas) || ParejasCartas<4 || ParejasCartas>12){//Si el usuario escribe algo que no sea numero y ese mismo numero es menor que 4 o mayor que 12 
-    return CONFIG_PREDEFINIDA.parejas;
-}else{
-    return ParejasCartas;
-}
-}
-
-function generarCartas(numParejas) {
-    let mazo = [];
-    for (let i = 1; i <= numParejas; i++) {
-        mazo.push({ numero: i, descubierta: true });
-        mazo.push({ numero: i, descubierta: true });
+    constructor(numero, descubierta = false) {
+        this.#numero = numero;
+        this.#descubierta = Boolean(descubierta);
     }
-    return mazo;
+
+    get numero() {
+        return this.#numero;
+    }
+
+    set numero(valor) {
+        this.#numero = valor;
+    }
+
+    get descubierta() {
+        return this.#descubierta;
+    }
+
+    set descubierta(valor) {
+        this.#descubierta = Boolean(valor);
+    }
+    // Convierte la carta en un objeto
+    aObjeto() {
+        return {
+            numero: this.#numero,
+            descubierta: this.#descubierta
+        };
+    }
+    // Crea una carta usando un objeto guardado
+    static desdeObjeto(obj) {
+        return new Carta(obj.numero, obj.descubierta);
+    }
+    
+    
+    // Da la vuelta a la carta
+    voltear() {
+        this.#descubierta = !this.#descubierta;
+    }
 }
 
 
-function fisher_yates(arrayCartas) {
-    // Recorre el array al revés, desde la última carta hasta la segunda
+// PREGUNTAMOS CUANTAS PAREJAS QUEREMOS
+function configurarPartida() {
+    const entrada = prompt("Introduce el número de parejas (entre 4 y 12):");
+    const parejas = Number(entrada);
+
+    if (entrada === null || entrada.trim() === "" || isNaN(parejas) || parejas < 4 || parejas > 12) {
+        return CONFIG_PREDEFINIDA.parejas;
+    }
+
+    return parejas;
+}
+
+// CREAMOS LAS CARTAS
+function generarCartas(numParejas) {
+    const cartas = [];
+    for (let i = 1; i <= numParejas; i++) {
+        cartas.push(new Carta(i, false));
+        cartas.push(new Carta(i, false));
+    }
+    return cartas;
+}
+// MEZCLAMOS LAS CARTAS
+function barajar(arrayCartas) {
     for (let i = arrayCartas.length - 1; i > 0; i--) {
-        //Elige una posición aleatoria entre la primera carta (0) y la carta actual (i)
-        let aleatorio = Math.floor(Math.random() * (i + 1));
-        let temporal = arrayCartas[i];           // Guarda la carta actual en una variable temporal
-        arrayCartas[i] = arrayCartas[aleatorio];  // Pone la carta aleatoria en la posición actual
-        arrayCartas[aleatorio] = temporal;        // Mueve la carta de la variable temporal a la posición aleatoria
+        const aleatorio = Math.floor(Math.random() * (i + 1));
+        [arrayCartas[i], arrayCartas[aleatorio]] = [arrayCartas[aleatorio], arrayCartas[i]];
     }
     return arrayCartas;
 }
-
-
+// MOSTRAMOS LAS CARTAS
 function mostrarCartas(cartas) {
-    let contenedorTablero = document.getElementById("tablero");
-    
-    if (!contenedorTablero) {
+    const tablero = document.getElementById("tablero");
+    if (!tablero) {
         console.error("No se encontró el elemento con id 'tablero'.");
         return;
     }
-    contenedorTablero.innerHTML = "";
-    cartas.forEach((carta) => {
-    let divCarta = document.createElement("div");
-    divCarta.className = "carta";
-    divCarta.textContent = carta.numero;
-    contenedorTablero.appendChild(divCarta);
-});
+
+    tablero.innerHTML = "";
+
+    for (const carta of cartas) {
+        const div = document.createElement("div");
+        div.className = "carta";
+        div.textContent = carta.descubierta ? carta.numero : "x";
+        tablero.appendChild(div);
+    }
 }
-//Guarda el estado completo actual de las cartas en el localStorage
+// GUARDAMOS LA PARTIDA
 function guardarProgreso(cartas) {
-    localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(cartas));
+    const datos = cartas.map(carta => carta.aObjeto());
+    localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(datos));
 }
-function voltearCarta(voltear){
-    let descubierta = mazo[voltear];
-    
-}
+// VOLTEAMOS UNA CARTA
+function voltearCarta(numero) {
+    const indice = numero - 1;
+    const carta = mazo[indice];
 
+    if (!carta) {
+        console.log("Esa carta no existe");
+        return;
+    }
+
+    // Si la carta ya está descubierta, no hacemos nada
+    if (carta.descubierta) {
+        return;
+    }
+
+    carta.voltear();
+    contador++;
+
+    guardarProgreso(mazo);
+    mostrarCartas(mazo);
+    mostrarContador();
+
+    console.log(`Carta ${numero} -> número: ${carta.numero} (volteos: ${contador})`);
+}
+// MOSTRAMOS EL CONTADOR
+function mostrarContador(){
+    const elementoContador = document.querySelector(".contador");
+    elementoContador.textContent = `${contador}`;
+}
+// INICIAMOS EL JUEGO
 function iniciarJuego() {
-    console.log("--- INICIANDO JUEGO ---");
-    //Intentamos leer si hay una partida guardada
     const partidaGuardada = localStorage.getItem(CLAVE_MEMORIA);
-    let cartasBarajadas;
+
     if (partidaGuardada) {
-        console.log("Restaurando partida guardada...");
-        // ¡Existe una partida! Recuperamos las cartas exactamente como estaban
-        cartasBarajadas = JSON.parse(partidaGuardada);
+        const datos = JSON.parse(partidaGuardada);
+        mazo = datos.map(obj => Carta.desdeObjeto(obj));
     } else {
-        console.log("Creando partida nueva desde cero...");
-        let numParejas = configurarPartida();   // Pregunta al usuario cuántas parejas quiere jugar
-        let cartas = generarCartas(numParejas); // Crea la baraja de cartas según el tamaño elegido
-        cartasBarajadas = fisher_yates(cartas); // Mezcla (baraja) las cartas de forma aleatoria
-        guardarProgreso(cartasBarajadas);
-        console.log("Número de parejas:", numParejas); // Verifica cuántas parejas seleccionó el usuario
-        console.log("Total de cartas:", cartasBarajadas.length); // Muestra la cantidad total de cartas generadas
-        console.log("Secuencia en el tablero:", cartasBarajadas.map(c => c.numero).join(" ")); // Imprime el orden exacto de los números para hacer trampas/pruebas
-        
-}
-mostrarCartas(cartasBarajadas); // Dibuja visualmente las cartas en la interfaz de la página
-}
+        const numParejas = configurarPartida();
+        const cartas = generarCartas(numParejas);
+        mazo = barajar(cartas);
+        guardarProgreso(mazo);
 
+        const numeros = mazo.map(carta => carta.numero);
+        console.log("Orden secreto:", numeros.join(" "));
+    }
 
+    mostrarCartas(mazo);
+    mostrarContador();
+}
+//BORRAR PARTIDA
 function fin() {
-    localStorage.removeItem(CLAVE_MEMORIA); // Borra el progreso guardado en el navegador
-    console.log("Partida finalizada. Memoria borrada.");
+    localStorage.removeItem(CLAVE_MEMORIA);
+    contador = 0;
+    console.log("Partida borrada de localStorage.");
 }
-
-// Arranca el juego automáticamente cuando la página web se ha cargado por completo
+// EMPEZAMOS CUANDO SE CARGA LA PÁGINA
 window.addEventListener("DOMContentLoaded", iniciarJuego);
