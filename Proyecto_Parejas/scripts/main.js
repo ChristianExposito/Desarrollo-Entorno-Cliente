@@ -31,25 +31,7 @@ class Carta {
     set descubierta(valor) {
         this.#descubierta = Boolean(valor);
     }
-    // Convierte la carta en un objeto
-    aObjeto() {
-        return {
-            numero: this.#numero,
-            descubierta: this.#descubierta
-        };
-    }
-    // Crea una carta usando un objeto guardado
-    static desdeObjeto(obj) {
-        return new Carta(obj.numero, obj.descubierta);
-    }
-    
-    
-    // Da la vuelta a la carta
-    voltear() {
-        this.#descubierta = !this.#descubierta;
-    }
 }
-
 
 // PREGUNTAMOS CUANTAS PAREJAS QUEREMOS
 function configurarPartida() {
@@ -83,6 +65,7 @@ function barajar(arrayCartas) {
 // MOSTRAMOS LAS CARTAS
 function mostrarCartas(cartas) {
     const tablero = document.getElementById("tablero");
+
     if (!tablero) {
         console.error("No se encontró el elemento con id 'tablero'.");
         return;
@@ -90,16 +73,25 @@ function mostrarCartas(cartas) {
 
     tablero.innerHTML = "";
 
-    for (const carta of cartas) {
+    for (let i = 0; i < cartas.length; i++) {
         const div = document.createElement("div");
         div.className = "carta";
-        div.textContent = carta.descubierta ? carta.numero : "x";
+        div.textContent = cartas[i].descubierta ? cartas[i].numero : "x";
+
+        div.onclick = function () {
+            voltearCarta(i + 1);
+        };
+
         tablero.appendChild(div);
     }
 }
 // GUARDAMOS LA PARTIDA
 function guardarProgreso(cartas) {
-    const datos = cartas.map(carta => carta.aObjeto());
+    const datos = cartas.map(carta => ({
+        numero: carta.numero,
+        descubierta: carta.descubierta
+    }));
+
     localStorage.setItem(CLAVE_MEMORIA, JSON.stringify(datos));
 }
 // VOLTEAMOS UNA CARTA
@@ -107,27 +99,19 @@ function voltearCarta(numero) {
     const indice = numero - 1;
     const carta = mazo[indice];
 
-    if (!carta) {
-        console.log("Esa carta no existe");
-        return;
-    }
-
-    // Si la carta ya está descubierta, no hacemos nada
     if (carta.descubierta) {
-        return;
+        carta.descubierta = false;
+    } else {
+        carta.descubierta = true;
+        contador++;
     }
-
-    carta.voltear();
-    contador++;
 
     guardarProgreso(mazo);
     mostrarCartas(mazo);
     mostrarContador();
-
-    console.log(`Carta ${numero} -> número: ${carta.numero} (volteos: ${contador})`);
 }
 // MOSTRAMOS EL CONTADOR
-function mostrarContador(){
+function mostrarContador() {
     const elementoContador = document.querySelector(".contador");
     elementoContador.textContent = `${contador}`;
 }
@@ -137,7 +121,8 @@ function iniciarJuego() {
 
     if (partidaGuardada) {
         const datos = JSON.parse(partidaGuardada);
-        mazo = datos.map(obj => Carta.desdeObjeto(obj));
+
+        mazo = datos.map(obj => new Carta(obj.numero, obj.descubierta));
     } else {
         const numParejas = configurarPartida();
         const cartas = generarCartas(numParejas);
